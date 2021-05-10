@@ -3,6 +3,8 @@ import { ZERO_ADDRESS } from '../src/constants'
 import { rinkeby } from 'dxswap-core/.contracts.json'
 import { getAddress } from '@ethersproject/address'
 import { TEST_TOKENS } from './commons'
+import { getNetwork } from '@ethersproject/networks'
+import { getDefaultProvider } from '@ethersproject/providers'
 
 describe('fees', () => {
   // skip because uses old implementations, update tests with new local deployment
