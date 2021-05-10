@@ -8,15 +8,13 @@ import IDXswapPair from 'dxswap-core/build/IDXswapPair.json'
 import IDXswapFactory from 'dxswap-core/build/IDXswapFactory.json'
 import invariant from 'tiny-invariant'
 import ERC20Abi from './abis/ERC20.json'
-import TokenRegistryAbi from './abis/token-registry.json'
+// import TokenRegistryAbi from './abis/token-registry.json'
 import {
   ChainId,
   BigintIsh,
   FACTORY_ADDRESS,
   PERMISSIVE_MULTICALL_ADDRESS,
-  PERMISSIVE_MULTICALL_ABI,
-  TOKEN_REGISTRY_ADDRESS,
-  DXSWAP_TOKEN_LIST_ID
+  PERMISSIVE_MULTICALL_ABI
 } from './constants'
 import { Token } from './entities/token'
 import { Currency } from './entities/currency'
@@ -40,7 +38,8 @@ const TOKEN_LOGO_URI_CACHE: {
   [ChainId.XDAI]: {},
   [ChainId.SOKOL]: {},
   [ChainId.ARBITRUM_TESTNET_V3]: {},
-  [ChainId.RINKEBY]: {}
+  [ChainId.RINKEBY]: {},
+  [ChainId.MATIC]: {}
 }
 
 /**
@@ -376,10 +375,44 @@ export abstract class Fetcher {
     chainId: ChainId,
     provider = getDefaultProvider(getNetwork(chainId))
   ): Promise<TokenList> {
-    const tokenRegistryContract = new Contract(TOKEN_REGISTRY_ADDRESS[chainId], TokenRegistryAbi, provider)
-    const tokenAddresses = await tokenRegistryContract.getTokens(DXSWAP_TOKEN_LIST_ID[chainId])
-    const tokens = await this.fetchMultipleTokensData(chainId, tokenAddresses, provider)
+
+    const tokenListUrl = new Map([
+      [1, 'https://tokens.coingecko.com/uniswap/all.json'],
+      [100, 'https://tokens.honeyswap.org'],
+      [137, 'https://unpkg.com/quickswap-default-token-list@1.0.55/build/quickswap-default.tokenlist.json']
+    ])
+
+    // const tokenRegistryContract = new Contract(TOKEN_REGISTRY_ADDRESS[chainId], TokenRegistryAbi, provider)
+    // const tokenAddresses = await tokenRegistryContract.getTokens(DXSWAP_TOKEN_LIST_ID[chainId])
+    // const tokens = await this.fetchMultipleTokensData(chainId, tokenAddresses, provider)
+
+    console.log(provider);
+
+    const chainTokenURL = tokenListUrl.get(chainId) ?? ''
+    
+    const response = await fetch(chainTokenURL, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json;charset=UTF-8',
+      }
+    })
+
     const tokenList = []
+
+    if (!response.ok) {
+      return {
+        name: 'default token list',
+        tokens: []
+      }
+    }
+
+    const { tokens }: { tokens: TokenInfo[] } = await response.json()
+
+
+    if (tokens.length != 0) {
+      await this.fetchTokenLogoUri(chainId, tokens)
+    }
+
     for (const token of tokens) {
       tokenList.push({
         chainId,
@@ -387,42 +420,42 @@ export abstract class Fetcher {
         name: token.name!,
         decimals: token.decimals,
         symbol: token.symbol!,
-        logoURI: await this.fetchTokenLogoUri(token)
+        logoURI: token.logoURI
       })
     }
+
+
     return {
-      name: 'DXswap default token list',
+      name: 'swapr default token list',
       tokens: tokenList
     }
   }
 
-  private static async fetchTokenLogoUri(token: Token): Promise<string> {
-    const chainId = token.chainId
-    if (chainId !== ChainId.MAINNET && chainId !== ChainId.XDAI) {
-      return '' // token logos not fully supported for testnets
+  private static async fetchTokenLogoUri(tokenChainId: number, tokens: TokenInfo[]): Promise<void> {
+    const chainId = tokenChainId
+    if (chainId !== ChainId.MAINNET && chainId !== ChainId.XDAI && chainId !== ChainId.MATIC) {
+      return // token logos not fully supported for testnets
     }
+
     if (Object.keys(TOKEN_LOGO_URI_CACHE[chainId]).length === 0) {
-      await this.populateTokenLogoCache(chainId)
+      await this.populateTokenLogoCache(chainId, tokens)
     }
-    return TOKEN_LOGO_URI_CACHE[chainId][token.address.toLowerCase()]
+    return
   }
 
-  public static async populateTokenLogoCache(chainId: ChainId): Promise<void> {
-    if (chainId !== ChainId.MAINNET && chainId !== ChainId.XDAI) {
+  public static async checkTokenLogoCache(chainId: ChainId): Promise<void> {
+    if (chainId !== ChainId.MAINNET && chainId !== ChainId.XDAI && chainId !== ChainId.MATIC) {
+      return // token logos not fully supported for testnets
+    }
+    if (Object.keys(TOKEN_LOGO_URI_CACHE[chainId]).length === 0) {
+      // populate cache
+      await this.fetchDxDaoTokenList(chainId)
       return
     }
-    let tokenListURL = ''
-    if (chainId == ChainId.MAINNET) {
-      tokenListURL = 'https://tokens.coingecko.com/uniswap/all.json' // coingecko list used for mainnet
-    } else {
-      tokenListURL = 'https://tokens.honeyswap.org' // honeyswap list used for xdai
-    }
-    const response = await fetch(tokenListURL)
-    if (!response.ok) {
-      console.warn(`could not fetch token list at ${tokenListURL}`)
-      return
-    }
-    const { tokens }: { tokens: TokenInfo[] } = await response.json()
+    return 
+  }
+
+  public static async populateTokenLogoCache(chainId: ChainId, tokens: TokenInfo[]): Promise<void> {
     TOKEN_LOGO_URI_CACHE[chainId] = tokens.reduce((cache: { [tokenAddress: string]: string }, token) => {
       cache[token.address.toLowerCase()] = token.logoURI
       return cache
@@ -431,7 +464,7 @@ export abstract class Fetcher {
 
   public static getCachedTokenLogo(token: Token): string {
     const { chainId } = token
-    if (chainId !== ChainId.MAINNET && chainId !== ChainId.XDAI) {
+    if (chainId !== ChainId.MAINNET && chainId !== ChainId.XDAI && chainId !== ChainId.MATIC) {
       return ''
     }
     return TOKEN_LOGO_URI_CACHE[chainId][token.address.toLowerCase()] || ''
