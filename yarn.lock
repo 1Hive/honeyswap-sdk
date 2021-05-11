@@ -2625,9 +2625,15 @@ domexception@^1.0.1:
   dependencies:
     typescript "^3.9.5"
 
-"dxswap-periphery@https://github.com/1Hive/dxswap-periphery.git":
+"dxswap-core@https://github.com/1Hive/dxswap-core.git#master":
   version "0.3.7"
-  resolved "https://github.com/1Hive/dxswap-periphery.git#a7fbcf94b85c7e8c8780daea0064920ff657160a"
+  resolved "https://github.com/1Hive/dxswap-core.git#afb1add7980533da636eb8478bc21a8123fce63e"
+  dependencies:
+    typescript "^3.9.5"
+
+"dxswap-periphery@https://github.com/1Hive/dxswap-periphery.git#master":
+  version "0.3.7"
+  resolved "https://github.com/1Hive/dxswap-periphery.git#4364459df6a3530af7b195cf5995723564f2ff29"
   dependencies:
     dxswap-core "https://github.com/1Hive/dxswap-core.git"
 
