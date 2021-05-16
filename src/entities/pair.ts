@@ -50,9 +50,6 @@ let PAIR_ADDRESS_CACHE: {
   },
   [RoutablePlatform.BAOSWAP.name]: {
     ...INITIAL_CACHE_STATE
-  },
-  [RoutablePlatform.LEVINSWAP.name]: {
-    ...INITIAL_CACHE_STATE
   }
 }
 
@@ -92,7 +89,7 @@ export class Pair {
               [tokens[1].address]: getCreate2Address(
                 platform.factoryAddress[chainId] as string,
                 keccak256(['bytes'], [pack(['address', 'address'], [tokens[0].address, tokens[1].address])]),
-                platform.initCodeHash
+                platform.initCodeHash[chainId] as string,
               )
             }
           }
@@ -117,7 +114,7 @@ export class Pair {
 
     this.platform = platform ? platform : RoutablePlatform.SWAPR
     const liquidityTokenAddress = Pair.getAddress(tokenAmounts[0].token, tokenAmounts[1].token, platform)
-    this.liquidityToken = new Token(tokenAmounts[0].token.chainId, liquidityTokenAddress, 18, 'DXS', 'DXswap')
+    this.liquidityToken = new Token(tokenAmounts[0].token.chainId, liquidityTokenAddress, 18, 'HNS', 'HoneySwap')
     this.protocolFeeDenominator = protocolFeeDenominator ? protocolFeeDenominator : defaultProtocolFeeDenominator
     this.tokenAmounts = tokenAmounts as [TokenAmount, TokenAmount]
     this.swapFee = swapFee ? swapFee : platform.defaultSwapFee
