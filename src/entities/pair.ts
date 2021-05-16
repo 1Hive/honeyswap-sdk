@@ -73,7 +73,7 @@ export class Pair {
     return this.liquidityToken.address === other.liquidityToken.address
   }
 
-  public static getAddress(tokenA: Token, tokenB: Token, platform: RoutablePlatform = RoutablePlatform.SWAPR): string {
+  public static getAddress(tokenA: Token, tokenB: Token, platform: RoutablePlatform = RoutablePlatform.HONEYSWAP): string {
     const tokens = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA] // does safety checks
     const chainId = tokenA.chainId
     invariant(platform.supportsChain(chainId), 'INVALID_PLATFORM_CHAIN_ID')
@@ -104,7 +104,7 @@ export class Pair {
     tokenAmountB: TokenAmount,
     swapFee?: BigintIsh,
     protocolFeeDenominator?: BigintIsh,
-    platform: RoutablePlatform = RoutablePlatform.SWAPR,
+    platform: RoutablePlatform = RoutablePlatform.HONEYSWAP,
     liquidityMiningCampaigns: LiquidityMiningCampaign[] = []
   ) {
     invariant(tokenAmountA.token.chainId === tokenAmountB.token.chainId, 'CHAIN_ID')
@@ -112,7 +112,7 @@ export class Pair {
       ? [tokenAmountA, tokenAmountB]
       : [tokenAmountB, tokenAmountA]
 
-    this.platform = platform ? platform : RoutablePlatform.SWAPR
+    this.platform = platform ? platform : RoutablePlatform.HONEYSWAP
     const liquidityTokenAddress = Pair.getAddress(tokenAmounts[0].token, tokenAmounts[1].token, platform)
     this.liquidityToken = new Token(tokenAmounts[0].token.chainId, liquidityTokenAddress, 18, 'HNS', 'HoneySwap')
     this.protocolFeeDenominator = protocolFeeDenominator ? protocolFeeDenominator : defaultProtocolFeeDenominator

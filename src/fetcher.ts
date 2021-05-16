@@ -180,7 +180,7 @@ export abstract class Fetcher {
     tokenA: Token,
     tokenB: Token,
     provider = getDefaultProvider(getNetwork(tokenA.chainId)),
-    platform: RoutablePlatform = RoutablePlatform.SWAPR
+    platform: RoutablePlatform = RoutablePlatform.HONEYSWAP
   ): Promise<Pair> {
     invariant(tokenA.chainId === tokenB.chainId, 'CHAIN_ID')
     const address = Pair.getAddress(tokenA, tokenB, platform)

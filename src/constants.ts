@@ -92,8 +92,12 @@ export const DXSWAP_TOKEN_LIST_ID: { [chainId: number]: number } = {
 }
 
 export const INIT_CODE_HASH: { [chainId: number]: string } = {
-  [ChainId.XDAI]: '0x3f88503e8580ab941773b59034fb4b2a63e86dbc031b3633a925533ad3ed2b93',
-  [ChainId.MATIC]: '0x5d5dfa98b23ace472a8581d664cd33b83c335db3009d1477c491e1cda864ad63',
+  [ChainId.MAINNET]: '0xd306a548755b9295ee49cc729e13ca4a45e00199bbd890fa146da43a50571776', // Swapr
+  [ChainId.RINKEBY]: '0xd306a548755b9295ee49cc729e13ca4a45e00199bbd890fa146da43a50571776', // Swapr
+  [ChainId.ARBITRUM_TESTNET_V3]: '0xd306a548755b9295ee49cc729e13ca4a45e00199bbd890fa146da43a50571776', // Swapr
+  [ChainId.SOKOL]: '0xd306a548755b9295ee49cc729e13ca4a45e00199bbd890fa146da43a50571776', // Swapr
+  [ChainId.XDAI]: '0x3f88503e8580ab941773b59034fb4b2a63e86dbc031b3633a925533ad3ed2b93', // Honeyswap
+  [ChainId.MATIC]: '0x5d5dfa98b23ace472a8581d664cd33b83c335db3009d1477c491e1cda864ad63', // Honeyswap
 }
 
 export const MINIMUM_LIQUIDITY = JSBI.BigInt(1000)
