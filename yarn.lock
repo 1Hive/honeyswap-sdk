@@ -2621,14 +2621,14 @@ domexception@^1.0.1:
 
 "dxswap-core@https://github.com/1Hive/dxswap-core.git", "dxswap-core@https://github.com/1Hive/dxswap-core.git#master":
   version "0.3.7"
-  uid "6b4795f449dc3d95973fe7be9707ac35e2d036fc"
-  resolved "https://github.com/1Hive/dxswap-core.git#6b4795f449dc3d95973fe7be9707ac35e2d036fc"
+  uid "9d38d7887b38abd20f1aa8e478ac4a322ab616f0"
+  resolved "https://github.com/1Hive/dxswap-core.git#9d38d7887b38abd20f1aa8e478ac4a322ab616f0"
   dependencies:
     typescript "^3.9.5"
 
 "dxswap-periphery@https://github.com/1Hive/dxswap-periphery.git#master":
   version "0.3.7"
-  resolved "https://github.com/1Hive/dxswap-periphery.git#c7d15b4961779c6af035929177bcab9c1356c221"
+  resolved "https://github.com/1Hive/dxswap-periphery.git#aa2c3ea6850d3280c40d16b4d9b9e4234f6d033a"
   dependencies:
     dxswap-core "https://github.com/1Hive/dxswap-core.git"
 
