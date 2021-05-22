@@ -372,8 +372,7 @@ export abstract class Fetcher {
    * @param provider the provider to use to fetch the data
    */
   public static async fetchDxDaoTokenList(
-    chainId: ChainId,
-    provider = getDefaultProvider(getNetwork(chainId))
+    chainId: ChainId
   ): Promise<TokenList> {
 
     const tokenListUrl = new Map([
@@ -385,8 +384,6 @@ export abstract class Fetcher {
     // const tokenRegistryContract = new Contract(TOKEN_REGISTRY_ADDRESS[chainId], TokenRegistryAbi, provider)
     // const tokenAddresses = await tokenRegistryContract.getTokens(DXSWAP_TOKEN_LIST_ID[chainId])
     // const tokens = await this.fetchMultipleTokensData(chainId, tokenAddresses, provider)
-
-    console.log(provider);
 
     const chainTokenURL = tokenListUrl.get(chainId) ?? ''
     
