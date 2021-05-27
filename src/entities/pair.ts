@@ -50,6 +50,9 @@ let PAIR_ADDRESS_CACHE: {
   },
   [RoutablePlatform.BAOSWAP.name]: {
     ...INITIAL_CACHE_STATE
+  },
+  [RoutablePlatform.QUICKSWAP.name]: {
+    ...INITIAL_CACHE_STATE
   }
 }
 
