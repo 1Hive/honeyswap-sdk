@@ -371,10 +371,7 @@ export abstract class Fetcher {
    * @param chainId the chainId of the network to fecth the protocol fee
    * @param provider the provider to use to fetch the data
    */
-  public static async fetchDxDaoTokenList(
-    chainId: ChainId
-  ): Promise<TokenList> {
-
+  public static async fetchDxDaoTokenList(chainId: ChainId): Promise<TokenList> {
     const tokenListUrl = new Map([
       [1, 'https://tokens.coingecko.com/uniswap/all.json'],
       [100, 'https://tokens.honeyswap.org'],
@@ -386,11 +383,11 @@ export abstract class Fetcher {
     // const tokens = await this.fetchMultipleTokensData(chainId, tokenAddresses, provider)
 
     const chainTokenURL = tokenListUrl.get(chainId) ?? ''
-    
+
     const response = await fetch(chainTokenURL, {
       method: 'GET',
       headers: {
-        'content-type': 'application/json;charset=UTF-8',
+        'content-type': 'application/json;charset=UTF-8'
       }
     })
 
@@ -405,22 +402,22 @@ export abstract class Fetcher {
 
     const { tokens }: { tokens: TokenInfo[] } = await response.json()
 
-
     if (tokens.length != 0) {
       await this.fetchTokenLogoUri(chainId, tokens)
     }
 
     for (const token of tokens) {
-      tokenList.push({
-        chainId,
-        address: token.address,
-        name: token.name!,
-        decimals: token.decimals,
-        symbol: token.symbol!,
-        logoURI: token.logoURI
-      })
+      if (token.chainId === chainId) {
+        tokenList.push({
+          chainId,
+          address: token.address,
+          name: token.name!,
+          decimals: token.decimals,
+          symbol: token.symbol!,
+          logoURI: token.logoURI
+        })
+      }
     }
-
 
     return {
       name: 'swapr default token list',
@@ -449,7 +446,7 @@ export abstract class Fetcher {
       await this.fetchDxDaoTokenList(chainId)
       return
     }
-    return 
+    return
   }
 
   public static async populateTokenLogoCache(chainId: ChainId, tokens: TokenInfo[]): Promise<void> {
