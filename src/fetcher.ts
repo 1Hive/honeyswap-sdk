@@ -375,7 +375,7 @@ export abstract class Fetcher {
     const tokenListUrl = new Map([
       [1, 'https://tokens.coingecko.com/uniswap/all.json'],
       [100, 'https://tokens.honeyswap.org'],
-      [137, 'https://unpkg.com/quickswap-default-token-list@1.0.55/build/quickswap-default.tokenlist.json']
+      [137, 'https://tokens.honeyswap.org']
     ])
 
     // const tokenRegistryContract = new Contract(TOKEN_REGISTRY_ADDRESS[chainId], TokenRegistryAbi, provider)
