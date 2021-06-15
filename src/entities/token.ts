@@ -48,7 +48,7 @@ export class Token extends Currency {
     ),
     [ChainId.MATIC]: new Token(
       ChainId.MATIC,
-      '0x8cc8538d60901d19692F5ba22684732Bc28F54A3',
+      '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
       18,
       'WETH',
       'Wrapped Ether on Matic'
