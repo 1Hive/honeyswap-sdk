@@ -28,7 +28,7 @@ export class RoutablePlatform {
     FACTORY_ADDRESS,
     ROUTER_ADDRESS,
     INIT_CODE_HASH,
-    defaultSwapFee
+    _30
   )
   public static readonly UNISWAP = new RoutablePlatform(
     'Uniswap',
