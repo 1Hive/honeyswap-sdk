@@ -51,7 +51,10 @@ export class RoutablePlatform {
       [ChainId.RINKEBY]: SUSHISWAP_ROUTER_ADDRESS, 
       [ChainId.MATIC]: SUSHISWAP_MATIC_ROUTER_ADDRESS 
     },
-    { [ChainId.MAINNET]: '0xe18a34eb0e04b04f7a0ac29a6e80748dca96319b42c54d679cb821dca90c6303' },
+    { 
+      [ChainId.MAINNET]: '0xe18a34eb0e04b04f7a0ac29a6e80748dca96319b42c54d679cb821dca90c6303',
+      [ChainId.MATIC]: '0xe18a34eb0e04b04f7a0ac29a6e80748dca96319b42c54d679cb821dca90c6303'
+    },
     _30
   )
   public static readonly SWAPR = new RoutablePlatform(
