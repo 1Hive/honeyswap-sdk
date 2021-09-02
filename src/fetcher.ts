@@ -374,8 +374,8 @@ export abstract class Fetcher {
   public static async fetchDxDaoTokenList(chainId: ChainId): Promise<TokenList> {
     const tokenListUrl = new Map([
       [1, 'https://tokens.coingecko.com/uniswap/all.json'],
-      [100, 'https://unpkg.com/honeyswap-default-token-list@3.1.1/build/honeyswap-default.tokenlist.json'],
-      [137, 'https://unpkg.com/quickswap-default-token-list@latest/build/quickswap-default.tokenlist.json']
+      [100, 'https://unpkg.com/@1hive/default-token-list@latest/build/honeyswap-default.tokenlist.json'],
+      [137, 'https://unpkg.com/@1hive/default-token-list@latest/build/honeyswap-default.tokenlist.json']
 //       [100, 'https://tokens.honeyswap.org'],
 //       [137, 'https://tokens.honeyswap.org']
     ])
