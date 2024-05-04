@@ -384,12 +384,13 @@ export abstract class Fetcher {
 
     const chainTokenURL = tokenListUrl.get(chainId) ?? ''
 
-    const response = await fetch(chainTokenURL, {
-      method: 'GET',
-      headers: {
-        'content-type': 'application/json;charset=UTF-8'
-      }
-    })
+const response = await fetch(chainTokenURL, {
+  method: 'GET',
+  mode: 'cors',
+  headers: {
+    'Content-Type': 'application/json;charset=UTF-8'
+  }
+});
 
     const tokenList = []
 
